@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Alumnos</title>
+</head>
+
+<body>
+    <script>
+        // Lista de alumnos (como en Python)
+        let alumnos = [
+        ];
+
+        // Buscar alumno por nombre (ignorando mayúsculas)
+        function buscarAlumno(nombre) {
+            return alumnos.find(alumno => alumno[0].toLowerCase() === nombre.toLowerCase());
+        }
+
+        // Agrega o actualiza
+        function agregarOActualizar(nombre, materia, nota) {
+            let alumno = buscarAlumno(nombre);
+            if (alumno) {
+                alert(`El alumno '${nombre}' ya existe.`);
+                let materias = alumno[1];
+                for (let i = 0; i < materias.length; i++) {
+                    if (materias[i][0].toLowerCase() === materia.toLowerCase()) {
+                        alert(`Actualizando nota de ${materia} a ${nota}.`);
+                        materias[i][1] = nota;
+                        return;
+                    }
+                }
+                alert(`➕ Agregando nueva materia ${materia} con nota ${nota}.`);
+                materias.push([materia, nota]);
+            } else {
+                alert(`✅ Agregando nuevo alumno: ${nombre}`);
+                alumnos.push([nombre, [[materia, nota]]]);
+            }
+        }
+
+        // Bucle principal
+        while (true) {
+            let nombre = prompt("Ingrese el nombre del alumno (o 'salir' para terminar):");
+            if (!nombre || nombre.toLowerCase() === 'salir') break;
+
+            let materia = prompt("Ingrese el nombre de la materia:");
+            if (!materia) continue;
+
+            let notaStr = prompt("Ingrese la nota (número):");
+            let nota = parseInt(notaStr);
+            if (isNaN(nota)) {
+                alert("⚠️ Nota inválida.");
+                continue;
+            }
+
+            agregarOActualizar(nombre, materia, nota);
+        }
+
+        // Mostrar lista final
+        let salida = "📋 Lista final de alumnos:\n";
+        for (let alumno of alumnos) {
+            salida += `\n${alumno[0]}:\n`;
+            for (let materia of alumno[1]) {
+                salida += `  ${materia[0]}: ${materia[1]}\n`;
+            }
+        }
+        alert(salida);
+    </script>
+</body>
+
+</html>
